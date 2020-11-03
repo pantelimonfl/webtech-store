@@ -1,0 +1,22 @@
+{
+  "name": "webtech-store",
+  "version": "1.0.0",
+  "description": "A very nice online store.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "store",
+    "e-commerce",
+    "web",
+    "technologies"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1"
+  }
+}
