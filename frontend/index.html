@@ -1,11 +1,128 @@
 <!DOCTYPE html>
 
 <html>
-    <head>
-        <title>WebTech Store</title>
-    </head>
 
-    <body>
-        <h1>Store works!</h1>
-    </body>
+<head>
+    <title>WebTech Store</title>
+
+    <script type='text/javascript'>
+        window.onload = () => {
+            console.log("Pagina a fost incarcata.")
+            loadProducts()
+        }
+
+        function loadProducts(){
+            fetch('/api/products/all').then((response)=>response.json().then((result)=>{
+                console.log(result)
+                let html = `<thead>
+                            <tr>
+                            <th>Product Id</th>
+                            <th>Name</th>
+                            <th>Color</th>
+                            <th>Price</th>
+                            <th>Timestamp</th>
+                            <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>`
+                
+                result.forEach((element)=>{
+                    html += `   <tr>
+                                <td>${element.ProductId}</td>
+                                <td>${element.Name}</td>
+                                <td>${element.Color}</td>
+                                <td>${element.Price}</td>
+                                <td>${element.createdAt}</td>
+                                <td>
+                                <button>Edit</button>
+                                <button>Delete</button>
+                                </td>
+                                </tr>`
+                })
+
+                html += `   </tbody>
+                            </table>`
+
+                document.getElementById('table').innerHTML = html
+            })).catch((error)=>{
+                console.log(error)
+            })
+        }
+
+        function addProduct(event){
+            event.preventDefault();
+
+            let product = {
+                Name: event.target.name.value,
+                Color: event.target.color.value,
+                Price: event.target.price.value
+            }
+
+            console.log(JSON.stringify(product))
+            
+            let url = '/api/products/add'
+            let method = 'POST'
+
+            fetch(url, {
+                method: method,
+                headers: {
+                    'Content-Type':'application/json'
+                },
+                body: JSON.stringify(product)
+            })
+            .then((response)=>{
+                console.log(response)
+                loadProducts()
+            }).catch((error)=>{
+                console.log(error)
+            })
+        }
+
+        function deleteProduct(event){
+            event.preventDefault();
+
+            let url = '/api/products/delete/' + event.target.productId.value
+            let method = 'DELETE'
+
+            fetch(url, {
+                method: method
+            }).then((response)=>{
+                console.log(response)
+                loadProducts()
+            }).catch((error)=>{
+                console.log(error)
+            })
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Store works!</h1>
+
+    <div id='content'>
+
+        <table style='width: 800px;' id='table'>
+        </table>
+
+        <form onsubmit="addProduct(event)">
+            <span>Name</span>
+            <input name='name' id='name'><br/>
+            <span>Color</span>
+            <input name='color' id='color'><br/>
+            <span>Price</span>
+            <input name='price' id='price'><br/>
+
+            <input type='submit' value='Add product'>
+        </form>
+        <br/><br/>
+        <form onsubmit="deleteProduct(event)">
+            <span>ProductId</span>
+            <input name='productId' id='productId'><br/>
+            
+            <input type='submit' value='Delete'>
+        </form>
+
+    </div>
+</body>
+
 </html>

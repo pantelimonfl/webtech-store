@@ -91,7 +91,7 @@ let Order = database.define('Order', {
     {
         freezeTableName: true
     })
-
+/*
 let OrderXProduct = database.define('OrderXProduct', {
     OrderXProductId: {
         allowNull: false,
@@ -119,6 +119,7 @@ let OrderXProduct = database.define('OrderXProduct', {
     {
         freezeTableName: true
     })
+*/
 
 User.hasMany(Order);
 Order.belongsTo(User);
@@ -200,26 +201,80 @@ app.delete("/api/users/delete/:id", (req, res) => {
 
 
 app.get("/api/products/all", (req, res) => {
+    Product.findAll({
+        attributes: ['ProductId','Name','Color','Price','createdAt']
+    }).then((products)=>{
+        res.status(200).send(products)
+    }).catch((error)=>{
+        console.log(error)
+        res.status(500).send("Eroare la extragerea produselor.")
+    })
 })
 
 app.get("/api/products/:id", (req, res) => {
+    Product.findByPk(req.params.id, {
+        attributes: ['ProductId','Name','Color','Price']
+    }).then((product)=>{
+        res.status(200).send(product)
+    }).catch((error)=>{
+        console.log(error)
+        res.status(500).send("Eroare la extragerea produsului.")
+    })
 })
 
 app.post("/api/products/add", (req, res) => {
+    Product.create(req.body).then(()=>{
+        res.status(201).send("Produsul a fost creat.")
+    }).catch((error)=>{
+        console.log(error)
+        res.status(500).send("Eroare la crearea produsului.")
+    })
 })
 
 app.put("/api/products/edit/:id", (req, res) => {
+    Product.findByPk(req.params.id).then((product)=>{
+        product.update(req.body)
+    }).then(()=>{
+        res.status(200).send("Produsul a fost modificat cu succes.")
+    }).catch((error)=>{
+        console.log(error)
+        res.status(500).send("Eroare la modificarea produsului.")
+    })
 })
 
 app.delete("/api/products/delete/:id", (req, res) => {
+    Product.findByPk(req.params.id).then((product)=>{
+        product.destroy()
+    }).then(()=>{
+        res.status(200).send("Produs sters cu succes!") 
+    }).catch((error)=>{
+        console.log(error)
+        res.status(500).send("Eroare la stergerea produsului.")
+    })
 })
 
 app.get("/api/orders/all", (req, res) => {
+    Order.findAll({
+        attributes: ['OrderId','UserId','Address'],
+        include : [{
+            model: Product,
+            attributes : ['ProductId','Name','Color','Price']
+        }]
+    }).then((orders)=>{
+        res.status(200).send(orders)
+    }).catch((error)=>{
+        console.log(error)
+        res.status(500).send("Eroare la extragerea comenzilor")
+    })
 })
 
 app.get("/api/orders/:id", (req, res) => {
-    res.status(200)
-    res.send("/api/orders/:id works")
+    Order.findByPk(req.params.id).then((order)=>{
+        res.status(200).send(order);
+    }).catch((error)=>{
+        console.log(error)
+        res.status(500).send("Eroare la extragerea comenzii.")
+    })
 })
 
 app.get("/api/orders/:client", (req, res) => {
