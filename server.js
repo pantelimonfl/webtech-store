@@ -1,9 +1,14 @@
 const express = require('express')
 const { Sequelize } = require('sequelize')
 const sequelize = require('sequelize')
+const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
 
 const app = express()
 const port = 8000
+
+const secret = "Mz6G9ARpHDvGejeKgsF4RBsDEvPuezDi"
+const saltRounds = 2
 
 app.use(require('body-parser').urlencoded({ extended: true }));
 
@@ -198,7 +203,34 @@ app.delete("/api/users/delete/:id", (req, res) => {
     })
 })
 
+app.post("/api/users/register", (req, res) => {
+    bcrypt.hash(req.body.Password, saltRounds, function(err, hash) {
+        let user = req.body
+        user.Password = hash
+        User.create(user).then(()=>{
+            res.status(201).send("utilizatorul a fost creat")
+        })
+    });
+})
 
+app.get("/api/users/login", (req, res) => {
+    User.findOne({
+        where: {
+            Email : req.query.Email
+        },
+        attributes: ['UserId', 'Name', 'Email']
+    }).then((userAccount) => {
+        bcrypt.compare(req.query.Password, userAccount.Password , function(err, result) {
+            if(result)
+            {
+                res.status(200).send(userAccount)
+            }
+        });
+    }).catch((error) => {
+        console.log(error)
+        res.status(500).send("Eroare la extragerea utilizatorului!")
+    })
+})
 
 app.get("/api/products/all", (req, res) => {
     Product.findAll({
