@@ -161,7 +161,7 @@ app.get("/api/users/all", (req, res) => {
     })
 })
 
-app.get("/api/users/:id", (req, res) => {
+app.get("/api/users/get/:id", (req, res) => {
     User.findByPk(req.params.id, {
         attributes: ['UserId', 'Name', 'Email']
     }).then((userAccount) => {
@@ -218,7 +218,7 @@ app.get("/api/users/login", (req, res) => {
         where: {
             Email : req.query.Email
         },
-        attributes: ['UserId', 'Name', 'Email']
+        attributes: ['UserId', 'Name', 'Email','Password']
     }).then((userAccount) => {
         bcrypt.compare(req.query.Password, userAccount.Password , function(err, result) {
             if(result)
