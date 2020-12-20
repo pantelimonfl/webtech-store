@@ -5,17 +5,16 @@ import Users from "./Users";
 import ProductPage from "./ProductPage";
 import ProductList from "./ProductList";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Main from "./Main";
+import Login from "./Login";
 
 function App() {
   return (
     <Router>
       <div className="App">
-        <Menu />
         <Switch>
-          <Route path="/orders" component={Orders} />
-          <Route path="/users" component={Users} />
-          <Route path="/products" component={ProductList} />
-          <Route path="/product/:id" component={ProductPage} />
+          <Route path="/login" component={Login} />
+          <Route path="/" component={Main} />
         </Switch>
       </div>
     </Router>
