@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 export const UserService = {
   login,
+  googleLogin,
   logout,
   getUserData,
   isLoggedIn,
@@ -8,6 +9,24 @@ export const UserService = {
 
 function login(email, password) {
   const loginEndpoint = `http://localhost:8000/api/users/login?Email=${email}&Password=${password}`;
+  const requestOptions = {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  };
+
+  return fetch(loginEndpoint, requestOptions)
+    .then(handleResponse)
+    .then((token) => {
+      if (token) {
+        localStorage.setItem("auth_token", token);
+      }
+
+      return token;
+    });
+}
+
+function googleLogin(token) {
+  const loginEndpoint = `http://localhost:8000/api/google/login/${token}`;
   const requestOptions = {
     method: "GET",
     headers: { "Content-Type": "application/json" },

@@ -1,6 +1,7 @@
 import "./Login.css";
 import React, { Component } from "react";
 import { UserService } from "../Services/UserService";
+import GoogleAuth from "./GoogleAuth";
 
 class Login extends Component {
   constructor(props) {
@@ -62,6 +63,7 @@ class Login extends Component {
               />
               <input type="submit" className="fadeIn fourth" value="Log In" />
             </form>
+            <GoogleAuth {...this.props} />
           </div>
         </div>
       </div>
