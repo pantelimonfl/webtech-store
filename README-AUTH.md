@@ -12,18 +12,18 @@ Procesul de autentificare a fost impartit in doua parti: autentificarea clasica,
 
 In cazul ambelor procese de autentificare, rezultatul final va fi un JWT ([JSON Web Token](https://jwt.io/)) returnat de catre server si stocat de aplicatia react cu ajutorul obiectului localStorage.
 
-### Autentificarea clasica
+### Autentificarea clasica - [Vezi](https://github.com/pantelimonfl/webtech-store/blob/main/README-AUTH.md#autentificarea-clasica)
 
 1. Utilizatorul introduce adresa de e-mail si parola.
 2. Se apeleaza endpoint-ul '/api/users/login' cu parametrii e-mail si parola.
 3. Se verifica daca exista un utilizator cu credentialele specificate.
 4. In caz afirmativ, se va intoarce un token ce atesta autenticitatea utilizatorului.
 
-### Autentificarea cu Google
+### Autentificarea cu Google [!Vezi](https://github.com/pantelimonfl/webtech-store/blob/main/README-AUTH.md#implementarea-autentificarii-cu-serviciul-extern---google)
 
 1. Utilizatorul apasa butonul "Log-in with Google".
 2. Se deschide fereastra prin care se alege un cont sau se introduc credentialele Google (fereastra de autentificare cu google nu este controlata de catre noi, prin urmare nu avem acces la datele introduse de utilizator)
-3. In cazul in care autentificarea cu Google a reusit, se va intoarce un obiect JSON cu cateva date despre utilizator (vezi sectiunea GOOOGLE) si un token care va fi transmis server-ului.
+3. In cazul in care autentificarea cu Google a reusit, se va intoarce un obiect JSON cu cateva date despre utilizator ([vezi sectiunea Google](https://github.com/pantelimonfl/webtech-store/blob/main/README-AUTH.md#implementarea-autentificarii-cu-serviciul-extern---google)) si un token care va fi transmis server-ului.
 4. Se creeaza un request catre server prin care se paseaza token-ul primit de la Google.
 5. Serverul, la randul sau, creeaza un request catre Google prin care verifica token-ul primit.
 6. In cazul in care token-ul este autentic si contine datele despre utilizator, se extrage adresa de e-mail si:
