@@ -163,7 +163,13 @@ handleLogin(e) {
   }
 ```
 
-## 7. Adaugarea unei componente *ProtectedRoute* - [Link commit](https://github.com/pantelimonfl/webtech-store/commit/edab6d05f4cc29cccc0f98c3d28d424712ac3396)
+## 7.Adaugarea unui element in meniu - [Link commit](https://github.com/pantelimonfl/webtech-store/commit/c2937ad329ab66353d7e11cf69b53652a998ab13)
+
+Pe bara de meniu am adaugat un nou element care afiseaza adresa de e-mail a utilizatorului curent, iar in interiorul acestuia regasim un dropdown pentru optiunea de logout.
+
+![dropdown](https://i.imgur.com/FME5CTK.png)
+
+## 8. Adaugarea unei componente *ProtectedRoute* - [Link commit](https://github.com/pantelimonfl/webtech-store/commit/edab6d05f4cc29cccc0f98c3d28d424712ac3396)
 
 Mai departe, am creat o noua componenta numita *ProtectedRoute* pe care o vom utiliza pentru a "proteja" componentele din aplicatia noastra astfel incat sa poata fi accesate
 doar de catre utilizatorii autentificati.
@@ -232,7 +238,7 @@ Astfel, prin acest request vom obtine urmatoarele date:
 
 In cazul in care token-ul nu este valid, Google va returna un raspuns specific, iar autentificarea nu se va putea realiza.
 
-## 8. Adaugarea endpoint-ului pe server - [Link commit](https://github.com/pantelimonfl/webtech-store/commit/5eda864581040f776168f9c6b3d430458181cba9)
+## 9. Adaugarea endpoint-ului pe server - [Link commit](https://github.com/pantelimonfl/webtech-store/commit/5eda864581040f776168f9c6b3d430458181cba9)
 
 Intr-o prima faza, am instalat libraria *axios* pentru a putea crea request-uri HTTP din serverul nostru express.
 Mai departe, am adaugat un nou endpoint *api/google/login/:token* ce primeste ca parametru token-ul initial de la Google, apoi il verifica, iar daca este autentic,
@@ -279,10 +285,10 @@ app.get("/api/google/login/:token", (req, result) => {
 });
 ```
 
-## 9. Adaugarea librariei react-google-login si implementarea functiei de autentificare - [Link commit](https://github.com/pantelimonfl/webtech-store/commit/d64c17d018d89e445446195ef4fe582b029f0519)
+## 10. Adaugarea librariei react-google-login si implementarea functiei de autentificare - [Link commit](https://github.com/pantelimonfl/webtech-store/commit/d64c17d018d89e445446195ef4fe582b029f0519)
 
-9.1. In prima faza am instalat libraria *react-google-login*, librarie care expune o interfata *mai* usoara de autentificare cu serviciul extern Google.
-9.2. Am adaugat componenta *GoogleAuth*, care reprezinta butonul care va deschide fereastra de autentificare. In cadrul acestei componente am adaugat butonul, 
+10.1. In prima faza am instalat libraria *react-google-login*, librarie care expune o interfata *mai* usoara de autentificare cu serviciul extern Google.
+10.2. Am adaugat componenta *GoogleAuth*, care reprezinta butonul care va deschide fereastra de autentificare. In cadrul acestei componente am adaugat butonul, 
 reprezentat printr-o componenta numita *GoogleLogin* ce contine o proprietate *clientId*. Aici vom introduce codul nostru de client obtinut de la Google.
 
 Pe proprietatea onSuccess am declarat event handler-ul *handleResponse*, care trimite mai departe catre *UserService* token-ul primit pentru a fi validat.
@@ -300,7 +306,7 @@ render() {
   }
 ```
 
-9.3. Am adaugat in *UserService* metoda care realizeaza request-ul de verificare a token-ului primit de la Google.
+10.3. Am adaugat in *UserService* metoda care realizeaza request-ul de verificare a token-ului primit de la Google.
 Metoda *googleLogin* din *UserService* creeaza un request catre server in care trimite ca parametru token-ul primit de la Google. In cazul in care token-ul este validat,
 va primi inapoi un JWT pe care il va stoca la nivel local.
 
@@ -324,5 +330,4 @@ function googleLogin(token) {
 }
 ```
 
-9.4. Am adaugat butonul de autentificare cu Google in pagina de login.
-
+10.4. Am adaugat butonul de autentificare cu Google in pagina de login.
