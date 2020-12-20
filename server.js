@@ -3,6 +3,7 @@ const { Sequelize } = require("sequelize");
 const sequelize = require("sequelize");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const axios = require("axios");
 
 const app = express();
 const port = 8000;
@@ -276,6 +277,41 @@ app.get("/api/users/login", (req, res) => {
       console.log(error);
       res.status(500).send("Eroare la extragerea utilizatorului!");
     });
+});
+
+app.get("/api/google/login/:token", (req, result) => {
+  const checkTokenEndpoint = `https://oauth2.googleapis.com/tokeninfo?id_token=${req.params.token}`;
+  axios
+    .get(checkTokenEndpoint)
+    .then((res) => {
+      User.findOne({
+        where: {
+          Email: res.data.email,
+        },
+        attributes: ["UserId", "Name", "Email"],
+      }).then((userAccount) => {
+        if (userAccount) {
+          let payload = {
+            Email: userAccount.Email,
+            Name: userAccount.Name,
+          };
+          result.status(200).send(generateJwt(payload));
+        } else {
+          User.create({
+            Name: res.data.name,
+            Email: res.data.email,
+            Password: 0,
+          }).then(() => {
+            let payload = {
+              Email: res.data.email,
+              Name: res.data.name,
+            };
+            result.status(200).send(generateJwt(payload));
+          });
+        }
+      });
+    })
+    .catch((err) => console.log(err));
 });
 
 app.get("/api/products/all", (req, res, next) => {
