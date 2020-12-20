@@ -1,9 +1,12 @@
 import "./Login.css";
 import React, { Component } from "react";
+import { UserService } from "../Services/UserService";
 
 class Login extends Component {
   constructor(props) {
     super(props);
+
+    UserService.logout();
 
     this.state = {
       email: "",
@@ -16,7 +19,21 @@ class Login extends Component {
     this.setState({ [name]: value });
   };
 
-  handleLogin = (e) => {};
+  handleLogin = (e) => {
+    e.preventDefault();
+    const { email, password } = this.state;
+
+    if (!(email && password)) {
+      return;
+    }
+
+    UserService.login(email, password).then(() => {
+      const { from } = {
+        from: { pathname: "/" },
+      };
+      this.props.history.push(from);
+    });
+  };
 
   render() {
     const { email, password } = this.state;
