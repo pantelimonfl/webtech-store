@@ -262,7 +262,12 @@ app.get("/api/users/login", (req, res) => {
         userAccount.Password,
         function (err, result) {
           if (result) {
-            res.status(200).send(userAccount);
+            let payload = {
+              Email: userAccount.Email,
+              Name: userAccount.Name,
+            };
+
+            res.status(200).send(generateJwt(payload));
           }
         }
       );
@@ -403,3 +408,12 @@ app.delete("/api/orders/delete/:id", (req, res) => {
 app.listen(port, () => {
   console.log(`Now listening on ${port}`);
 });
+
+function generateJwt(payload) {
+  var token = jwt.sign(payload, secret, {
+    expiresIn: "1h",
+    issuer: "WebTech-Store",
+  });
+
+  return token;
+}
