@@ -1,12 +1,24 @@
 import React, { Component } from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
+import NavDropdown from "react-bootstrap/NavDropdown";
+import { UserService } from "../Services/UserService";
 
 class Menu extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      user: {
+        name: "",
+        email: "",
+      },
+    };
   }
+
+  componentDidMount = () => {
+    this.setState({ user: UserService.getUserData() });
+  };
+
   render() {
     return (
       <Navbar bg="light" expand="lg">
@@ -19,6 +31,9 @@ class Menu extends Component {
             <Nav.Link href="/orders">Orders</Nav.Link>
             <Nav.Link href="/users">Users</Nav.Link>
           </Nav>
+          <NavDropdown title={this.state.user.email} id="basic-nav-dropdown">
+            <NavDropdown.Item href="/login">Logout</NavDropdown.Item>
+          </NavDropdown>
         </Navbar.Collapse>
       </Navbar>
     );
