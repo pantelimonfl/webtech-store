@@ -7,6 +7,7 @@ import ProductList from "./ProductList";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Main from "./Main";
 import Login from "./Login";
+import { ProtectedRoute } from "./ProtectedRoute";
 
 function App() {
   return (
@@ -14,7 +15,7 @@ function App() {
       <div className="App">
         <Switch>
           <Route path="/login" component={Login} />
-          <Route path="/" component={Main} />
+          <ProtectedRoute path="/" component={Main} />
         </Switch>
       </div>
     </Router>
